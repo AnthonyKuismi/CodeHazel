@@ -15,6 +15,9 @@
 		76AB9880259252C700EB6AA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76AB987E259252C700EB6AA0 /* Main.storyboard */; };
 		76AB9882259252CB00EB6AA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76AB9881259252CB00EB6AA0 /* Assets.xcassets */; };
 		76AB989025A4AA3300EB6AA0 /* dungeonTileset.sks in Resources */ = {isa = PBXBuildFile; fileRef = 76AB988F25A4AA3300EB6AA0 /* dungeonTileset.sks */; };
+		76AB98C025A6193300EB6AA0 /* dino_idle.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 76AB98BD25A6193200EB6AA0 /* dino_idle.atlas */; };
+		76AB98C125A6193300EB6AA0 /* dino_run.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 76AB98BE25A6193200EB6AA0 /* dino_run.atlas */; };
+		76AB98C225A6193300EB6AA0 /* dino_hurt.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 76AB98BF25A6193300EB6AA0 /* dino_hurt.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		76AB9881259252CB00EB6AA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76AB9883259252CB00EB6AA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76AB988F25A4AA3300EB6AA0 /* dungeonTileset.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = dungeonTileset.sks; sourceTree = "<group>"; };
+		76AB98BD25A6193200EB6AA0 /* dino_idle.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = dino_idle.atlas; sourceTree = "<group>"; };
+		76AB98BE25A6193200EB6AA0 /* dino_run.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = dino_run.atlas; sourceTree = "<group>"; };
+		76AB98BF25A6193300EB6AA0 /* dino_hurt.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = dino_hurt.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +70,9 @@
 				76AB9876259252C700EB6AA0 /* GameScene.sks */,
 				76AB9878259252C700EB6AA0 /* Actions.sks */,
 				76AB987A259252C700EB6AA0 /* GameScene.swift */,
+				76AB98BF25A6193300EB6AA0 /* dino_hurt.atlas */,
+				76AB98BD25A6193200EB6AA0 /* dino_idle.atlas */,
+				76AB98BE25A6193200EB6AA0 /* dino_run.atlas */,
 				76AB987C259252C700EB6AA0 /* GameViewController.swift */,
 				76AB987E259252C700EB6AA0 /* Main.storyboard */,
 				76AB9881259252CB00EB6AA0 /* Assets.xcassets */,
@@ -132,9 +141,12 @@
 			files = (
 				76AB9880259252C700EB6AA0 /* Main.storyboard in Resources */,
 				76AB9877259252C700EB6AA0 /* GameScene.sks in Resources */,
+				76AB98C125A6193300EB6AA0 /* dino_run.atlas in Resources */,
 				76AB9882259252CB00EB6AA0 /* Assets.xcassets in Resources */,
 				76AB989025A4AA3300EB6AA0 /* dungeonTileset.sks in Resources */,
 				76AB9879259252C700EB6AA0 /* Actions.sks in Resources */,
+				76AB98C225A6193300EB6AA0 /* dino_hurt.atlas in Resources */,
+				76AB98C025A6193300EB6AA0 /* dino_idle.atlas in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
