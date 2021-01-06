@@ -29,6 +29,16 @@ class GameScene: SKScene {
         
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        let location = touch?.location(in: self)
+        let angle = atan((location!.y - Dino.position.y)/(location!.x - Dino.position.x))
+        
+        print(angle)
+        
+        //Dino.physicsBody?.applyImpulse(CGVector(dx: <#T##CGFloat#>, dy: <#T##CGFloat#>))
+    }
+    
     func setTexture(folderName: String,sprite:SKSpriteNode,spriteName: String,speed:Double){
            let textureAtlas = SKTextureAtlas(named: folderName)
            var frames: [SKTexture] = []
