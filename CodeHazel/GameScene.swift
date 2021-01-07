@@ -26,6 +26,13 @@ class GameScene: SKScene {
         Dino.physicsBody?.affectedByGravity = false
         setTexture(folderName: "dino_idle", sprite: Dino, spriteName: "dinoidle", speed: 10)
         addChild(Dino)
+        for node in self.children{
+            if (node is SKTileMapNode){
+                if let theMap:SKTileMapNode = node as? SKTileMapNode{
+                    giveTileMapPhysicsBody(map: theMap)
+                }
+            }
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -40,10 +47,48 @@ class GameScene: SKScene {
         path.addLine(to: location)
         let move = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: Dino_speed)
         Dino.run(move)
-        
-       // Dino.physicsBody?.applyImpulse(CGVector(dx: dx, dy: dy))
     }
     
+    func giveTileMapPhysicsBody(map: SKTileMapNode ){
+        let tileMap = map
+        let startingLocation:CGPoint = tileMap.position
+    
+        var tileSize = tileMap.tileSize
+        tileSize.width = tileSize.width*tileMap.xScale
+        tileSize.height = tileSize.height*tileMap.yScale
+        let halfWidth = CGFloat(tileMap.numberOfColumns) / 2.0 * tileSize.width
+        let halfHeight = CGFloat(tileMap.numberOfRows) / 2.0 * tileSize.height
+    
+        for col in 0..<tileMap.numberOfColumns {
+    
+            for row in 0..<tileMap.numberOfRows {
+                let tilename:String = (tileMap.tileDefinition(atColumn: col, row: row)?.textures.description)!
+                if tileMap.tileDefinition(atColumn: col, row: row) != nil && !tilename.contains("floor") {
+                    let x = CGFloat(col) * tileSize.width - halfWidth + (tileSize.width / 2)
+                    let y = CGFloat(row) * tileSize.height - halfHeight + (tileSize.height / 2)
+                
+                    let tileNode = SKSpriteNode()
+                
+                    tileNode.position = CGPoint(x: x, y: y)
+                    tileNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: tileSize.width, height: tileSize.height))
+                    tileNode.physicsBody?.linearDamping = 60.0
+                    tileNode.physicsBody?.restitution = 0
+                    tileNode.physicsBody?.affectedByGravity = false
+                    tileNode.physicsBody?.allowsRotation = false
+                    tileNode.physicsBody?.isDynamic = false
+                    tileNode.physicsBody?.friction = 0
+                    tileNode.physicsBody?.contactTestBitMask = 0
+                    tileNode.physicsBody?.collisionBitMask = 0
+                    tileNode.physicsBody?.categoryBitMask = 1
+                
+                    self.addChild(tileNode)
+    
+                    tileNode.position = CGPoint(x: tileNode.position.x + startingLocation.x, y: tileNode.position.y + startingLocation.y)
+    
+                }
+            }
+        }
+   }
     func setTexture(folderName: String,sprite:SKSpriteNode,spriteName: String,speed:Double){
            let textureAtlas = SKTextureAtlas(named: folderName)
            var frames: [SKTexture] = []
