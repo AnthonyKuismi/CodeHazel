@@ -13,7 +13,9 @@ var Dino = SKSpriteNode()
 var scale:CGFloat = 4
 var Dino_speed:CGFloat = 300
 var theCamera = SKCameraNode()
-class GameScene: SKScene {
+var isTouching = false
+
+class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         setup()
     }
@@ -24,8 +26,13 @@ class GameScene: SKScene {
         Dino.size = CGSize(width: 24*scale, height: 24*scale)
         Dino.physicsBody = SKPhysicsBody(circleOfRadius: 8 * scale)
         Dino.physicsBody?.affectedByGravity = false
+        Dino.physicsBody?.contactTestBitMask = 1
+        Dino.physicsBody?.categoryBitMask = 0
+
         setTexture(folderName: "dino_idle", sprite: Dino, spriteName: "dinoidle", speed: 10)
         addChild(Dino)
+        physicsWorld.contactDelegate = self
+
         for node in self.children{
             if (node is SKTileMapNode){
                 if let theMap:SKTileMapNode = node as? SKTileMapNode{
@@ -33,16 +40,25 @@ class GameScene: SKScene {
                 }
             }
         }
+        
     }
     
     override func update(_ currentTime: TimeInterval) {
-        theCamera.position.y = Dino.position.y
+        theCamera.position = Dino.position
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         let location:CGPoint = (touch?.location(in: self))!
         let path = UIBezierPath()
+        
+        let dx = location.x - Dino.position.x
+        if dx < 0 {
+            Dino.xScale = -1
+        } else {
+            Dino.xScale = 1
+        }
+        
         path.move(to: Dino.position)
         path.addLine(to: location)
         let move = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: Dino_speed)
@@ -80,7 +96,9 @@ class GameScene: SKScene {
                     tileNode.physicsBody?.contactTestBitMask = 0
                     tileNode.physicsBody?.collisionBitMask = 0
                     tileNode.physicsBody?.categoryBitMask = 1
-                
+                    
+                    tileNode.name = "tile"
+                    
                     self.addChild(tileNode)
     
                     tileNode.position = CGPoint(x: tileNode.position.x + startingLocation.x, y: tileNode.position.y + startingLocation.y)
@@ -88,7 +106,7 @@ class GameScene: SKScene {
                 }
             }
         }
-   }
+    }
     func setTexture(folderName: String,sprite:SKSpriteNode,spriteName: String,speed:Double){
            let textureAtlas = SKTextureAtlas(named: folderName)
            var frames: [SKTexture] = []
@@ -102,5 +120,15 @@ class GameScene: SKScene {
         self.removeAllActions()
         let animation = SKAction.animate(with: frames, timePerFrame: (1/speed))
            sprite.run(SKAction.repeatForever(animation))
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        let nodeA = contact.bodyA.node
+        let nodeB = contact.bodyB.node
+                
+        if (nodeA?.name == "Dino" && nodeB?.name == "tile") || (nodeA?.name == "tile" && nodeB?.name == "Dino") {
+            Dino.removeAllActions()
+            setTexture(folderName: "dino_idle", sprite: Dino, spriteName: "dinoidle", speed: 10)
+        }
     }
 }
