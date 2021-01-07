@@ -11,12 +11,15 @@ import GameplayKit
 
 var Dino = SKSpriteNode()
 var scale:CGFloat = 4
+var Dino_speed:CGFloat = 300
+var theCamera = SKCameraNode()
 class GameScene: SKScene {
     override func didMove(to view: SKView) {
         setup()
     }
     
     func setup(){
+        self.camera = theCamera
         Dino.name = "Dino"
         Dino.size = CGSize(width: 24*scale, height: 24*scale)
         Dino.physicsBody = SKPhysicsBody(circleOfRadius: 8 * scale)
@@ -26,17 +29,19 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        
+        theCamera.position.y = Dino.position.y
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
-        let location = touch?.location(in: self)
-        let angle = atan((location!.y - Dino.position.y)/(location!.x - Dino.position.x))
+        let location:CGPoint = (touch?.location(in: self))!
+        let path = UIBezierPath()
+        path.move(to: Dino.position)
+        path.addLine(to: location)
+        let move = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: Dino_speed)
+        Dino.run(move)
         
-        print(angle)
-        
-        //Dino.physicsBody?.applyImpulse(CGVector(dx: <#T##CGFloat#>, dy: <#T##CGFloat#>))
+       // Dino.physicsBody?.applyImpulse(CGVector(dx: dx, dy: dy))
     }
     
     func setTexture(folderName: String,sprite:SKSpriteNode,spriteName: String,speed:Double){
