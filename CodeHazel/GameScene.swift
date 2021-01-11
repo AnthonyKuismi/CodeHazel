@@ -28,6 +28,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         Dino.physicsBody?.affectedByGravity = false
         Dino.physicsBody?.contactTestBitMask = 1
         Dino.physicsBody?.categoryBitMask = 0
+        Dino.position = CGPoint(x: 100, y: 220)
 
         setTexture(folderName: "dino_idle", sprite: Dino, spriteName: "dinoidle", speed: 10)
         addChild(Dino)
