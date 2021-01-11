@@ -80,7 +80,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
             for row in 0..<tileMap.numberOfRows {
                 let tilename:String = (tileMap.tileDefinition(atColumn: col, row: row)?.textures.description)!
-                if tileMap.tileDefinition(atColumn: col, row: row) != nil && !tilename.contains("floor") {
+                if tileMap.tileDefinition(atColumn: col, row: row) != nil && !(tilename.contains("floor") || tilename.contains("spike")) {
                     let x = CGFloat(col) * tileSize.width - halfWidth + (tileSize.width / 2)
                     let y = CGFloat(row) * tileSize.height - halfHeight + (tileSize.height / 2)
                 
