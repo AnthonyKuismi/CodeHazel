@@ -1,1 +1,2 @@
-# CodeHazel
+# Dungeon Dino
+This game is a top down dungeon crawler type game with the main player being a Dino! Throughout this project we learned how to use tilemaps and how to create physics bodies that go a long with them. Sadly, we ran out of time in the class to finish what we wanted. Right now you are able to tap and the Dino moves to your tap location and it stops when you hit a wall. Also when you hit a Spike it would send you back to the world spawn.
