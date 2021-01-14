@@ -18,6 +18,7 @@ var isTouching = false
 class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         setup()
+        
     }
     
     func setup(){
@@ -46,7 +47,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         theCamera.position = Dino.position
+        for node in self.children{
+           
+            if (node.name == "spike"){
+                if (CGPointDistance(from: Dino.position, to: node.position) < 8*scale){
+                        Dino.position = CGPoint(x: 100, y: 220)
+                }
+            }
+            
+        }
+        
     }
+    
+    func CGPointDistance(from: CGPoint, to: CGPoint) -> CGFloat {
+        return sqrt(CGPointDistanceSquared(from: from, to: to))
+    }
+    
+    func CGPointDistanceSquared(from: CGPoint, to: CGPoint) -> CGFloat {
+        return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y)
+    }
+
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
@@ -80,33 +100,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
             for row in 0..<tileMap.numberOfRows {
                 let tilename:String = (tileMap.tileDefinition(atColumn: col, row: row)?.textures.description)!
-                if tileMap.tileDefinition(atColumn: col, row: row) != nil && !(tilename.contains("floor") || tilename.contains("spike")) {
+                if tileMap.tileDefinition(atColumn: col, row: row) != nil && !(tilename.contains("floor")) {
                     let x = CGFloat(col) * tileSize.width - halfWidth + (tileSize.width / 2)
                     let y = CGFloat(row) * tileSize.height - halfHeight + (tileSize.height / 2)
                 
                     let tileNode = SKSpriteNode()
                 
                     tileNode.position = CGPoint(x: x, y: y)
-                    tileNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: tileSize.width, height: tileSize.height))
-                    tileNode.physicsBody?.linearDamping = 60.0
-                    tileNode.physicsBody?.restitution = 0
-                    tileNode.physicsBody?.affectedByGravity = false
-                    tileNode.physicsBody?.allowsRotation = false
-                    tileNode.physicsBody?.isDynamic = false
-                    tileNode.physicsBody?.friction = 0
-                    tileNode.physicsBody?.contactTestBitMask = 0
-                    tileNode.physicsBody?.collisionBitMask = 0
-                    tileNode.physicsBody?.categoryBitMask = 1
-                    
-                    tileNode.name = "tile"
-                    
+                    if !tilename.contains("spike"){
+                        tileNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: tileSize.width, height: tileSize.height))
+                        tileNode.physicsBody?.linearDamping = 60.0
+                        tileNode.physicsBody?.restitution = 0
+                        tileNode.physicsBody?.affectedByGravity = false
+                        tileNode.physicsBody?.allowsRotation = false
+                        tileNode.physicsBody?.isDynamic = false
+                        tileNode.physicsBody?.friction = 0
+                        tileNode.physicsBody?.contactTestBitMask = 0
+                        tileNode.physicsBody?.collisionBitMask = 0
+                        tileNode.physicsBody?.categoryBitMask = 1
+                        tileNode.name = "tile"
+
+                    }
+                    else if tilename.contains("spike"){
+                        tileNode.name = "spike"
+                    }
                     self.addChild(tileNode)
     
                     tileNode.position = CGPoint(x: tileNode.position.x + startingLocation.x, y: tileNode.position.y + startingLocation.y)
     
                 }
-            }
         }
+        }
+        
     }
     func setTexture(folderName: String,sprite:SKSpriteNode,spriteName: String,speed:Double){
            let textureAtlas = SKTextureAtlas(named: folderName)
@@ -131,5 +156,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             Dino.removeAllActions()
             setTexture(folderName: "dino_idle", sprite: Dino, spriteName: "dinoidle", speed: 10)
         }
+        
     }
 }
